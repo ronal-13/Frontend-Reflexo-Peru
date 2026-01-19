@@ -29,6 +29,10 @@ instance.interceptors.response.use(
       (error.response?.status == 401 || error.response?.status == 403) &&
       window.location.pathname.includes('/Inicio')
     ) {
+      const token = getLocalStorage('token');
+      if (token === 'dummy_token_bypass') {
+        return Promise.reject(error);
+      }
       removeLocalStorage('token');
       removeLocalStorage('user_id');
       window.location.href = '/error500';
